@@ -1,0 +1,62 @@
+@page
+@model kuba_web.Pages.Todo
+@{
+    ViewData["Title"] = "Todo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <h2>New task</h2>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="NewTaskName" class="form-control" />
+        <label asp-for="NewTaskName" class="form-label">Name</label>
+        <span asp-validation-for="NewTaskName" class="text-danger"></span>
+    </div>
+    <div>
+        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Add</button>
+    </div>
+</form>
+
+
+<div>
+    <h2>Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="p-1">Nr</th>
+                <th class="p-1">Name</th>
+                <th class="p-1">Created</th>
+                <th class="p-1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(var i = 0; i < Model.Tasks.Count(); i++)
+            {
+                var item = Model.Tasks[i];
+                <tr class="position-relative">
+                    <td class="p-1">@(i+1)</td>
+                    <td class="p-1 w-100">@item.Name</td>
+                    <td class="p-1">@item.CreatedAt</td>
+                    <td class="p-1">@item.Completed</td>
+                    <td class="p-1">
+                        <div class="d-flex gap-2">
+                        <a class="btn btn-primary" asp-page-handler="Toggle" asp-route-id="@item.Id">Toggle</a>
+                        <a class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@item.Id">Delete</a>
+
+                        </div>
+                    </td>
+                    @if(item.IsCompleted)
+                    {
+                    <td class="pe-none position-absolute top-50 start-0 w-100 h-25 bg-black translate-middle-y opacity-75 rounded-pill">
+
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
